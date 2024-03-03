@@ -8,7 +8,7 @@ import {
   Platform,
 } from "react-native";
 
-function MealItem({
+function MealListItem({
   id,
   title,
   imageUrl,
@@ -24,7 +24,7 @@ function MealItem({
     });
   }
   return (
-    <View style={styles.mealItem}>
+    <View style={styles.MealListItem}>
       <Pressable
         android_ripple={{ color: "#ccc" }}
         style={({ pressed }) => (pressed ? styles.buttonPressed : null)}
@@ -48,10 +48,10 @@ function MealItem({
   );
 }
 
-export default MealItem;
+export default MealListItem;
 
 const styles = StyleSheet.create({
-  mealItem: {
+  MealListItem: {
     margin: 10,
     borderRadius: 8,
     overflow: Platform.OS === "android" ? "hidden" : "visible",

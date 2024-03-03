@@ -14,8 +14,9 @@ import { isWhiteSpaceLike } from "typescript";
 import Subtitle from "../ui/Subtitle";
 import List from "../ui/List";
 import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import HeaderButton from "../ui/HeaderButton";
+import { FavouritesContext } from "../../../../store/context/favourites-context";
 
 function MealDetails({
   id,
@@ -32,26 +33,50 @@ function MealDetails({
   isLactoseFree,
 }) {
   const navigation = useNavigation();
+  const favouriteMealsContext = useContext(FavouritesContext);
 
-  function onHeaderButton() {
-    return Alert.alert(
-      "Favourite Added",
-      "This meal was added to your favourites.",
-      [
-        {
-          text: "Okay",
-          style: "default",
-        },
-      ]
-    );
+  const mealIsFavourite = favouriteMealsContext.ids.includes(id);
+
+  function favouriteStatus() {
+    if (!mealIsFavourite) {
+      favouriteMealsContext.addFavourite(id);
+      return Alert.alert(
+        "Favourite Added",
+        "This meal was added to your favourites.",
+        [
+          {
+            text: "Okay",
+            style: "default",
+          },
+        ]
+      );
+    } else {
+      favouriteMealsContext.removeFavourite(id);
+      return Alert.alert(
+        "Favourite Removed",
+        "This meal was removed from your favourites.",
+        [
+          {
+            text: "Okay",
+            style: "default",
+          },
+        ]
+      );
+    }
   }
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <HeaderButton onPress={onHeaderButton} />;
+        return (
+          <HeaderButton
+            onPress={favouriteStatus}
+            color={"red"}
+            icon={mealIsFavourite ? "heart-sharp" : "heart-outline"}
+          />
+        );
       },
     });
-  }, [navigation, onHeaderButton]);
+  }, [navigation, favouriteStatus]);
 
   return (
     <View style={styles.container}>

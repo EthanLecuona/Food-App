@@ -2,14 +2,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, View } from "react-native";
 import Colors from "../../../../utils/Colors";
 
-function HeaderButton({ title, onPress }) {
+function HeaderButton({ onPress, color, icon }) {
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.container}>
-        <Ionicons name="heart-circle-outline" size={35} color={"red"} />
+        <Ionicons name={icon} size={35} color={color} />
       </View>
     </Pressable>
   );
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     width: 40, // Example width, adjust as needed
     height: 40, // Making height equal to the width to form a circle
     borderRadius: 20, // Half of width/height to make it a perfect circle
-    backgroundColor: "white",
+    // backgroundColor: "white",
   },
   pressed: {
     opacity: 0.7, // Slightly fade the button on press for feedback
