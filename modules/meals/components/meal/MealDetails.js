@@ -17,6 +17,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext, useLayoutEffect } from "react";
 import HeaderButton from "../ui/HeaderButton";
 import { FavouritesContext } from "../../../../store/context/favourites-context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFavourite,
+  removeFavourite,
+} from "../../../../store/redux/favourites";
 
 function MealDetails({
   id,
@@ -33,13 +38,18 @@ function MealDetails({
   isLactoseFree,
 }) {
   const navigation = useNavigation();
-  const favouriteMealsContext = useContext(FavouritesContext);
+  // const favouriteMealsContext = useContext(FavouritesContext);
+  // const mealIsFavourite = favouriteMealsContext.ids.includes(id);
 
-  const mealIsFavourite = favouriteMealsContext.ids.includes(id);
+  const favouriteMealIds = useSelector((state) => state.favouriteMeals.ids);
+  const mealIsFavourite = favouriteMealIds.includes(id);
+
+  const dispath = useDispatch();
 
   function favouriteStatus() {
     if (!mealIsFavourite) {
-      favouriteMealsContext.addFavourite(id);
+      // favouriteMealsContext.addFavourite(id);
+      dispath(addFavourite({ id: id }));
       return Alert.alert(
         "Favourite Added",
         "This meal was added to your favourites.",
@@ -51,7 +61,8 @@ function MealDetails({
         ]
       );
     } else {
-      favouriteMealsContext.removeFavourite(id);
+      // favouriteMealsContext.removeFavourite(id);
+      dispath(removeFavourite({ id: id }));
       return Alert.alert(
         "Favourite Removed",
         "This meal was removed from your favourites.",
